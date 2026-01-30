@@ -16,6 +16,13 @@ def create_pipeline() -> PipelineResult:
             | "Gravar resultados" >> beam.io.WriteToText("./voos.txt")
                    )
 
+    pCollectionPoema: Any = (
+        pipe
+        | "importar dados poema" >> beam.io.ReadFromText("./poema.txt", skip_header_lines=0)
+        | "separar por espaços" >> beam.FlatMap(lambda x: x.split(" "))
+        # | "Mostrar Resultados" >> beam.Map(print)
+        | "Gravar resultados do poema" >> beam.io.WriteToText("./poema_result.txt")
+    )
     return pipe.run()
 
 if __name__ == '__main__':
