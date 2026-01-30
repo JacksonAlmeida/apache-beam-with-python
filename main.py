@@ -12,7 +12,8 @@ def create_pipeline() -> PipelineResult:
             pipe
             | "importar dados" >> beam.io.ReadFromText("./voos_sample.csv", skip_header_lines=1)
             | "separar por virgulas" >> beam.Map(lambda record: record.split(","))
-            | "Mostrar resultado" >> beam.Map(print)
+            # | "Mostrar resultado" >> beam.Map(print)
+            | "Gravar resultados" >> beam.io.WriteToText("./voos.txt")
                    )
 
     return pipe.run()
